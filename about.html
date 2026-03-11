@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sevinch — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0a0a0f;
+      color: #e0e0e0;
+      overflow-x: hidden;
+    }
+
+    /* ===== ANIMATED GRADIENT BACKGROUND ===== */
+    .bg-glow {
+      position: fixed; inset: 0; z-index: -1;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(139,92,246,.15), transparent),
+        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(236,72,153,.12), transparent),
+        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(59,130,246,.1), transparent);
+      animation: glowShift 12s ease-in-out infinite alternate;
+    }
+    @keyframes glowShift {
+      0%   { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(40deg); }
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(10,10,15,.7);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      transition: background .3s;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: #aaa;
+      font-size: .9rem; font-weight: 500;
+      position: relative; transition: color .3s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: linear-gradient(90deg, #8b5cf6, #ec4899);
+      transition: width .3s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem;
+    }
+    .hero-content { max-width: 700px; }
+    .hero .greeting {
+      font-size: 1rem; letter-spacing: 3px; text-transform: uppercase;
+      color: #8b5cf6; margin-bottom: .8rem;
+      opacity: 0; animation: fadeUp .8s .3s forwards;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      line-height: 1.15;
+      background: linear-gradient(135deg, #fff 0%, #c4b5fd 50%, #ec4899 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0; animation: fadeUp .8s .5s forwards;
+    }
+    .hero p {
+      margin-top: 1.4rem; font-size: 1.05rem; color: #999; line-height: 1.7;
+      opacity: 0; animation: fadeUp .8s .7s forwards;
+    }
+    .hero-buttons {
+      margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp .8s .9s forwards;
+    }
+    .btn {
+      padding: .75rem 2rem; border-radius: 50px; font-size: .9rem;
+      font-weight: 600; cursor: pointer; transition: transform .3s, box-shadow .3s;
+      text-decoration: none;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+      color: #fff; border: none;
+      box-shadow: 0 4px 24px rgba(139,92,246,.35);
+    }
+    .btn-primary:hover { box-shadow: 0 8px 32px rgba(139,92,246,.5); }
+    .btn-outline {
+      background: transparent; color: #c4b5fd;
+      border: 2px solid rgba(139,92,246,.4);
+    }
+    .btn-outline:hover { border-color: #8b5cf6; color: #fff; }
+
+    /* ===== SECTIONS ===== */
+    section { padding: 5rem 2rem; max-width: 1100px; margin: auto; }
+    .section-title {
+      text-align: center; margin-bottom: 3rem;
+    }
+    .section-title h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      background: linear-gradient(135deg, #c4b5fd, #ec4899);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-title p { color: #777; margin-top: .5rem; font-size: .95rem; }
+    .section-title .line {
+      width: 60px; height: 3px; margin: .8rem auto 0;
+      background: linear-gradient(90deg, #8b5cf6, #ec4899);
+      border-radius: 2px;
+    }
+
+    /* ===== ABOUT ===== */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+    }
+    .about-img-wrapper {
+      position: relative;
+      border-radius: 20px; overflow: hidden;
+      background: linear-gradient(135deg, rgba(139,92,246,.2), rgba(236,72,153,.2));
+      padding: 3px;
+    }
+    .about-img-inner {
+      background: #13131a; border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      height: 350px; font-size: 6rem;
+    }
+    .about-text h3 { font-size: 1.4rem; margin-bottom: 1rem; color: #e0e0e0; }
+    .about-text p { color: #999; line-height: 1.8; font-size: .95rem; }
+
+    /* ===== SKILLS GRID ===== */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .skill-card {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 16px; padding: 2rem;
+      transition: transform .4s, border-color .4s, box-shadow .4s;
+      position: relative; overflow: hidden;
+    }
+    .skill-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, rgba(139,92,246,.06), rgba(236,72,153,.06));
+      opacity: 0; transition: opacity .4s;
+    }
+    .skill-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(139,92,246,.3);
+      box-shadow: 0 12px 40px rgba(139,92,246,.15);
+    }
+    .skill-card:hover::before { opacity: 1; }
+    .skill-icon {
+      font-size: 2.4rem; margin-bottom: 1rem;
+      position: relative; z-index: 1;
+    }
+    .skill-card h3 {
+      font-size: 1.1rem; margin-bottom: .5rem;
+      color: #e0e0e0; position: relative; z-index: 1;
+    }
+    .skill-card p {
+      color: #888; font-size: .88rem; line-height: 1.6;
+      position: relative; z-index: 1;
+    }
+    .skill-tags {
+      display: flex; flex-wrap: wrap; gap: .4rem;
+      margin-top: .8rem; position: relative; z-index: 1;
+    }
+    .skill-tags span {
+      padding: .25rem .7rem; border-radius: 20px;
+      background: rgba(139,92,246,.12); color: #c4b5fd;
+      font-size: .75rem; font-weight: 500;
+    }
+
+    /* ===== LANGUAGES ===== */
+    .lang-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+    .lang-card {
+      text-align: center; padding: 1.5rem 1rem;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 14px;
+      transition: transform .3s, border-color .3s, box-shadow .3s;
+    }
+    .lang-card:hover {
+      transform: translateY(-4px) scale(1.03);
+      border-color: rgba(236,72,153,.3);
+      box-shadow: 0 8px 30px rgba(236,72,153,.12);
+    }
+    .lang-flag { font-size: 2.2rem; margin-bottom: .5rem; }
+    .lang-card h4 { font-size: .9rem; color: #e0e0e0; }
+    .lang-card .lang-level {
+      font-size: .75rem; color: #8b5cf6; margin-top: .3rem; font-weight: 500;
+    }
+
+    /* ===== CONTACT ===== */
+    .contact-wrapper {
+      text-align: center; max-width: 600px; margin: auto;
+    }
+    .contact-wrapper p { color: #999; line-height: 1.7; margin-bottom: 2rem; }
+    .contact-links { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+    .contact-link {
+      padding: .6rem 1.6rem; border-radius: 50px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      color: #c4b5fd; text-decoration: none;
+      font-size: .85rem; font-weight: 500;
+      transition: all .3s;
+    }
+    .contact-link:hover {
+      background: rgba(139,92,246,.15);
+      border-color: rgba(139,92,246,.4);
+      color: #fff; transform: translateY(-2px);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center; padding: 2rem;
+      border-top: 1px solid rgba(255,255,255,.05);
+      color: #555; font-size: .8rem;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.active {
+      opacity: 1; transform: translateY(0);
+    }
+
+    /* stagger children */
+    .reveal-children > * {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+    .reveal-children.active > * {
+      opacity: 1; transform: translateY(0);
+    }
+    .reveal-children.active > *:nth-child(1)  { transition-delay: .05s; }
+    .reveal-children.active > *:nth-child(2)  { transition-delay: .1s; }
+    .reveal-children.active > *:nth-child(3)  { transition-delay: .15s; }
+    .reveal-children.active > *:nth-child(4)  { transition-delay: .2s; }
+    .reveal-children.active > *:nth-child(5)  { transition-delay: .25s; }
+    .reveal-children.active > *:nth-child(6)  { transition-delay: .3s; }
+    .reveal-children.active > *:nth-child(7)  { transition-delay: .35s; }
+    .reveal-children.active > *:nth-child(8)  { transition-delay: .4s; }
+
+    /* ===== FLOATING PARTICLES ===== */
+    .particles { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+    .particle {
+      position: absolute; width: 4px; height: 4px;
+      background: rgba(139,92,246,.4); border-radius: 50%;
+      animation: float linear infinite;
+    }
+    @keyframes float {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1rem; }
+      .nav-links a { font-size: .8rem; }
+      .about-grid { grid-template-columns: 1fr; text-align: center; }
+      .about-img-inner { height: 250px; }
+      .lang-grid { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); }
+    }
+    @media (max-width: 500px) {
+      .nav-links { display: none; }
+      .hero h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <div class="particles" id="particles"></div>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">SA</div>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#languages">Languages</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <p class="greeting">Welcome to my portfolio</p>
+      <h1>Hi, I'm Sevinch Aliyeva</h1>
+      <p>A multilingual creative with a passion for art, music, and technology. I speak 7 languages, play violin, and love exploring the world of code &amp; design.</p>
+      <div class="hero-buttons">
+        <a href="#skills" class="btn btn-primary">Explore My Skills</a>
+        <a href="#contact" class="btn btn-outline">Get In Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-title reveal">
+      <h2>About Me</h2>
+      <p>A creative soul with many talents</p>
+      <div class="line"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-img-wrapper reveal">
+        <div class="about-img-inner">🎨</div>
+      </div>
+      <div class="about-text reveal">
+        <h3>Artist · Musician · Polyglot</h3>
+        <p>
+          I'm Sevinch — a creative and curious person who loves expressing ideas through art, music, and technology.
+          I play the violin, create art, and speak seven languages fluently or conversationally.
+          I'm also skilled in Microsoft Excel and have started my journey into web development with HTML, CSS, and JavaScript.
+          I believe that creativity knows no boundaries, and I'm always eager to learn something new.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-title reveal">
+      <h2>My Skills</h2>
+      <p>Things I'm passionate about and good at</p>
+      <div class="line"></div>
+    </div>
+    <div class="skills-grid reveal-children">
+
+      <!-- Art -->
+      <div class="skill-card">
+        <div class="skill-icon">🎨</div>
+        <h3>Art &amp; Design</h3>
+        <p>I express my creativity through visual art — drawing, painting, and digital design are my ways of seeing the world differently.</p>
+        <div class="skill-tags">
+          <span>Drawing</span>
+          <span>Painting</span>
+          <span>Creativity</span>
+        </div>
+      </div>
+
+      <!-- Violin -->
+      <div class="skill-card">
+        <div class="skill-icon">🎻</div>
+        <h3>Violin &amp; Music</h3>
+        <p>Music is a language of its own. I play the violin and enjoy both classical melodies and modern pieces.</p>
+        <div class="skill-tags">
+          <span>Violin</span>
+          <span>Classical</span>
+          <span>Performance</span>
+        </div>
+      </div>
+
+      <!-- Excel -->
+      <div class="skill-card">
+        <div class="skill-icon">📊</div>
+        <h3>Microsoft Excel</h3>
+        <p>I'm proficient in Excel — from data organization and formulas to charts and data analysis.</p>
+        <div class="skill-tags">
+          <span>Formulas</span>
+          <span>Charts</span>
+          <span>Data Analysis</span>
+        </div>
+      </div>
+
+      <!-- Web Dev -->
+      <div class="skill-card">
+        <div class="skill-icon">💻</div>
+        <h3>Web Development</h3>
+        <p>I've started learning web development and can build basic pages with HTML, style them with CSS, and add interactivity with JavaScript.</p>
+        <div class="skill-tags">
+          <span>HTML</span>
+          <span>CSS</span>
+          <span>JavaScript</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LANGUAGES -->
+  <section id="languages">
+    <div class="section-title reveal">
+      <h2>Languages I Speak</h2>
+      <p>Communicating across cultures</p>
+      <div class="line"></div>
+    </div>
+    <div class="lang-grid reveal-children">
+      <div class="lang-card">
+        <div class="lang-flag">🇬🇧</div>
+        <h4>English</h4>
+      </div>
+      <div class="lang-card">
+        <div class="lang-flag">🇯🇵</div>
+        <h4>Japanese</h4>
+      </div>
+      <div class="lang-card">
+        <div class="lang-flag">🇹🇲</div>
+        <h4>Turkmen</h4>
+      </div>
+      <div class="lang-card">
+        <div class="lang-flag">🇹🇷</div>
+        <h4>Turkish</h4>
+      </div>
+      <div class="lang-card">
+        <div class="lang-flag">🇦🇿</div>
+        <h4>Azerbaijani</h4>
+      </div>
+      <div class="lang-card">
+        <div class="lang-flag">🇷🇺</div>
+        <h4>Russian</h4>
+      </div>
+      <div class="lang-card">
+        <div class="lang-flag">🇺🇿</div>
+        <h4>Uzbek</h4>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-title reveal">
+      <h2>Get In Touch</h2>
+      <p>Let's connect and create something beautiful</p>
+      <div class="line"></div>
+    </div>
+    <div class="contact-wrapper reveal">
+      <p>Whether you want to collaborate on a project, discuss art, play music together, or just say hello — I'd love to hear from you!</p>
+      <div class="contact-links">
+        <a href="mailto:hello@sevinch.com" class="contact-link">📧 Email Me</a>
+        <a href="#" class="contact-link">💬 Message</a>
+        <a href="#" class="contact-link">🌐 Social</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Sevinch. Crafted with 💜</p>
+  </footer>
+
+  <script>
+    /* ===== SCROLL REVEAL ===== */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal, .reveal-children').forEach(el => observer.observe(el));
+
+    /* ===== FLOATING PARTICLES ===== */
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.classList.add('particle');
+      p.style.left = Math.random() * 100 + '%';
+      p.style.width = p.style.height = (Math.random() * 4 + 2) + 'px';
+      p.style.animationDuration = (Math.random() * 12 + 8) + 's';
+      p.style.animationDelay = (Math.random() * 10) + 's';
+      p.style.background = Math.random() > 0.5
+        ? 'rgba(139,92,246,' + (Math.random() * .3 + .1) + ')'
+        : 'rgba(236,72,153,' + (Math.random() * .3 + .1) + ')';
+      particlesContainer.appendChild(p);
+    }
+
+    /* ===== SMOOTH NAV HIGHLIGHT ===== */
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(sec => {
+        if (window.scrollY >= sec.offsetTop - 200) {
+          current = sec.getAttribute('id');
+        }
+      });
+      navLinks.forEach(link => {
+        link.style.color = link.getAttribute('href') === '#' + current ? '#fff' : '';
+      });
+    });
+  </script>
+</body>
+</html>
